@@ -1,0 +1,86 @@
+
+table{
+    padding: 0;
+    margin: 0;
+    border-collapse: collapse;
+    background-image: url(woodD1.jpg);
+}
+td,th,tr{
+    border-collapse: collapse;
+    border: 3px solid transparent;
+}
+.possible-move{
+    box-sizing: border-box;
+    border: 3.1px solid green;
+}
+.game{
+    width: 54px;
+    height: 50px;
+    background-color: rgb(208, 213, 216);
+}
+.grey{
+    background-color: rgb(88, 88, 88);
+}
+.firstTr{
+   
+    rotate: 180deg;
+    align-items: center;
+    text-align: center;
+    height: 40px;
+}
+.lastTr{
+
+    height: 40px;
+    align-items: center;
+    text-align: center;
+}
+.firstTd{
+    width: 25px;
+    align-items: center;
+    text-align: center;
+
+}
+.lastTd{
+
+    text-align: center;
+    rotate: 180deg;
+    width: 25px;
+}
+.figureB{
+    width: 40px;
+    height: 40px;
+    margin: 0 6px 0 6px;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+.figureW{
+    width: 40px;
+    height: 40px;
+    margin: 0 6px 0 6px;
+    background-color: white;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border: 1px solid black;
+}
+.figureW:focus{
+    border: 3px solid rgb(255, 0, 0);
+    box-sizing: border-box;
+}
+.figureB:focus{
+    border: 3px solid rgb(255, 0, 0);
+    box-sizing: border-box;
+}
+.can-move{
+    border: 1px solid rgb(0, 13, 255);
+    box-sizing: border-box;
+}
+
+
