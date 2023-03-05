@@ -8,7 +8,7 @@ table{
     padding: 0;
     margin: 0;
     border-collapse: collapse;
-    background-image: url(img/woodd1.jpg);
+    background-image: url(woodD1.jpg);
 }
 
 h1{
@@ -18,11 +18,11 @@ h1{
 }
 td,th,tr{
     border-collapse: collapse;
-    border: 3px solid transparent;
+    /* border: 3px solid transparent; */
 }
 .possible-move{
     box-sizing: border-box;
-    border: 3.1px solid green;
+    outline: 3.1px solid green;
 }
 .game-table{
     align-self: center;
