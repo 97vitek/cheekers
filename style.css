@@ -1,9 +1,20 @@
+body{
+    display: flex;
+    flex-direction: column;
+
+}
 
 table{
     padding: 0;
     margin: 0;
     border-collapse: collapse;
-    background-image: url(img/woodd1.jpg);
+    background-image: url(woodD1.jpg);
+}
+
+h1{
+    margin: 10px;
+    font-size: 25px;
+
 }
 td,th,tr{
     border-collapse: collapse;
@@ -12,6 +23,9 @@ td,th,tr{
 .possible-move{
     box-sizing: border-box;
     border: 3.1px solid green;
+}
+.game-table{
+    align-self: center;
 }
 .game{
     width: 54px;
@@ -82,5 +96,27 @@ td,th,tr{
     border: 1px solid rgb(0, 13, 255);
     box-sizing: border-box;
 }
-
-
+.queen{
+    position: relative;
+}
+.queen::before{
+    content: "Д";
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    font-size: 30px;
+    
+}
+.figureW.queen{
+    color: black;
+}
+.figureB.queen{
+    color: rgb(255, 255, 255);
+}
+.red{
+    color: red;
+}
+.button{
+    margin-top: 20px;
+    width: 100px;
+}

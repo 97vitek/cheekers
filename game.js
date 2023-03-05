@@ -7,11 +7,39 @@ let eatMove = false
 let requiredFigures = []
 
 
-let move = function(step, figure, steps, event) {
+let move = function(step, figure, steps, queenSteps, requiredEat, event) {
+    document.querySelectorAll(".can-move").forEach(item => item.classList.remove("can-move"))
     if(figure.onfocus === null){
         return
     }
-    document.querySelectorAll(".can-move").forEach(item => item.classList.remove("can-move"))
+    if(figure.classList.contains("queen")){
+
+        if(event.target.classList.contains("possible-move")){
+
+            event.target.append(figure)
+                
+
+            document.querySelectorAll(".possible-move").forEach((item)=>{item.classList.remove("possible-move")})
+            
+            queenSteps.forEach((item, itemIndex, object) => { // удаление фигур
+                if(item.move.id === event.target.id){
+                    queenSteps.forEach((stepItem, index, queenSteps) => {
+                        if(index < itemIndex && stepItem.direction === item.direction && stepItem.move.children[0]){
+                            stepItem.move.children[0].remove()
+                            eatMove = true
+                        }
+                    })
+                }  
+           })
+
+           firstMove = true 
+        }
+        figure.focus()//ПРОБЛЕМА НЕ ЗДЕСЬ!  
+
+        return
+
+    }
+    
     let step1 = steps[0];
     let step1Del = steps[1];
     let step2 = steps[2];
@@ -51,127 +79,161 @@ let move = function(step, figure, steps, event) {
     }
     step.append(figure)
     firstMove = true
+    if(+step.id.split("_", 2)[1] === 8 && figure.id === "figureW"){
+        figure.classList.add("queen")
+    }
+    if(+step.id.split("_", 2)[1] === 1 && figure.id === "figureB"){
+        figure.classList.add("queen")
+    }
     step.onclick = "";
     step2.onclick = ""; //убираем возможность после нажатия переместить фигуру, через eventlistener не получилось почему-то(
     
     figure.focus()
     figure.onblur = () => {
         figure.focus()
-
     }
+
 }
-function requiredEat(step, figure, steps, event) {
-    let step1 = steps[0];
-    let step1Del = steps[1];
-    let step2 = steps[2];
-    let step2Del = steps[3];
-    let step3 = steps[4];
-    let step3Del = steps[5];
-    let step4 = steps[6];
-    let step4Del = steps[7];
 
-    if(step1.id.split("_")[0] != 0 && !step1.children[0]) {
-        if(step1.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
-            step1.onclick = move.bind(null, step1, event, steps);
-            step1.classList.add("possible-move") 
-        }
-    }
 
-    if(step2.id.split("_")[0] != 9 && !step2.children[0]) {
-        if(step2.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
-            step2.onclick = move.bind(null, step2, event, steps);
-            step2.classList.add("possible-move") 
-        }
-    }
-    
-    if(step3Del && step3.id.split("_")[0] != 0 && !step3.children[0]) {
-        if(step3.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
-            step3.onclick = move.bind(null, step3, event, steps);
-            step3.classList.add("possible-move") 
-        }
-    }
-
-    if(step4Del && step4.id.split("_")[0] != 9 && !step4.children[0]) {
-        if(step4.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
-            step4.onclick = move.bind(null, step4, event, steps);
-            step4.classList.add("possible-move") 
-        }
-    }
-
+function requiredEat(step, enemyEat, steps, queenSteps, event) {
     let requiredSteps = []
-    for(let i = 0; i < steps.length; i++) {
-        if(i % 2 === 0) {
-            if(steps[i+1] != undefined) {
-                if(steps[i].children[0] === undefined && steps[i].classList.contains("game")) {
-                    let moves = document.querySelectorAll(".possible-move")
-                    moves.forEach(function(move) {
-                        move.onclick = ""
-                        move.classList.remove("possible-move") 
-                    }) 
-                    
-                    requiredSteps.push(steps[i])
-                    if(requiredFigures.length === 0){
-                        requiredFigures.push(event)
-                    }
-                    requiredFigures.find(item=>{
-                        if(item != event) {
+    if(event.classList.contains("queen")){
+        console.log("yeah,it's queen")
+        if(enemyEat.length > 0){
+            document.querySelectorAll(".possible-move").forEach(item => item.classList.remove("possible-move"))
+            enemyEat.forEach(item => { 
+                item.move.classList.add("possible-move")
+                item.move.onclick = move.bind(null, item.move, event, steps, queenSteps, enemyEat);
+                requiredFigures.push(event)
+                requiredSteps.push(item.move)
+            })
+        } else{
+            steps.forEach(item => {
+                item.move.onclick = move.bind(null, item.move, event, steps, queenSteps, null);
+            })
+            if(firstMove){
+                eatMove = false
+                event.onblur = ""
+                event.blur()
+            }
+        }
+        
+    } else{
+        let step1 = steps[0];
+        let step1Del = steps[1];
+        let step2 = steps[2];
+        let step2Del = steps[3];
+        let step3 = steps[4];
+        let step3Del = steps[5];
+        let step4 = steps[6];
+        let step4Del = steps[7];
+
+        if(step1.id.split("_")[0] != 0 && !step1.children[0]) {
+            if(step1.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
+                step1.onclick = move.bind(null, step1, event, steps, null, null);
+                step1.classList.add("possible-move") 
+            }
+        }
+
+        if(step2.id.split("_")[0] != 9 && !step2.children[0]) {
+            if(step2.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
+                step2.onclick = move.bind(null, step2, event, steps, null, null);
+                step2.classList.add("possible-move") 
+            }
+        }
+        
+        if(step3Del && step3.id.split("_")[0] != 0 && !step3.children[0]) {
+            if(step3.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
+                step3.onclick = move.bind(null, step3, event, steps, null, null);
+                step3.classList.add("possible-move") 
+            }
+        }
+
+        if(step4Del && step4.id.split("_")[0] != 9 && !step4.children[0]) {
+            if(step4.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
+                step4.onclick = move.bind(null, step4, event, steps, null, null);
+                step4.classList.add("possible-move") 
+            }
+        }
+
+
+        for(let i = 0; i < steps.length; i++) {
+            if(i % 2 === 0) {
+                if(steps[i+1] != undefined) {
+                    if(steps[i].children[0] === undefined && steps[i].classList.contains("game")) {
+                        let moves = document.querySelectorAll(".possible-move")
+                        moves.forEach(function(move) {
+                            move.onclick = ""
+                            move.classList.remove("possible-move") 
+                        }) 
+                        
+                        requiredSteps.push(steps[i])
+                        if(requiredFigures.length === 0){
                             requiredFigures.push(event)
                         }
-                    })
+                        requiredFigures.find(item=>{
+                            if(item != event) {
+                                requiredFigures.push(event)
+                            }
+                        })
+                    } 
                 } 
-            } 
+            }
+        } 
+
+        requiredSteps.forEach((step) => {
+            step.onclick = move.bind(null, step, event, steps, null, null);
+            step.classList.add("possible-move") 
+        })
+    }
+        if(firstMove && eatMove === false ){
+            let moves = document.querySelectorAll(".possible-move")
+            moves.forEach(function(move) {
+                move.onclick = ""
+                move.classList.remove("possible-move") 
+            })
+            event.onblur = ""
+            event.blur()
+            moveWhite = !moveWhite
+            firstMove = false
+            eatMove = false
+            requiredFigures=[]
+            changeofCourse(event)
+            return
+        } else if(firstMove && requiredSteps.length === 0 && eatMove === true){
+            let moves = document.querySelectorAll(".possible-move")
+            moves.forEach(function(move) {
+                move.onclick = ""
+                move.classList.remove("possible-move") 
+            })
+            event.onblur = ""
+            event.blur()
+            moveWhite = !moveWhite
+            requiredFigures=[]
+            firstMove = false
+            eatMove = false
+
+            changeofCourse(event)
+            return
         }
-    } 
-
-    requiredSteps.forEach((step) => {
-        step.onclick = move.bind(null, step, event, steps);
-        step.classList.add("possible-move") 
-    })
-
-    if(firstMove && eatMove === false ){
-        let moves = document.querySelectorAll(".possible-move")
-        moves.forEach(function(move) {
-            move.onclick = ""
-            move.classList.remove("possible-move") 
-        })
-        event.onblur = ""
-        event.blur()
-        moveWhite = !moveWhite
-        firstMove = false
-        eatMove = false
-        requiredFigures=[]
-        changeofCourse(event)
-        return
-    } else if(firstMove && requiredSteps.length === 0 && eatMove === true){
-        console.log(firstMove)
-        let moves = document.querySelectorAll(".possible-move")
-        moves.forEach(function(move) {
-            move.onclick = ""
-            move.classList.remove("possible-move") 
-        })
-        event.onblur = ""
-        event.blur()
-        moveWhite = !moveWhite
-        requiredFigures=[]
-        firstMove = false
-        eatMove = false
-        changeofCourse(event)
-        return
-    }
-    
-    if(!document.querySelector(".possible-move")) {
-        event.onblur = ""
-        event.blur()
+        
+        if(!document.querySelector(".possible-move")) {
+            event.onblur = ""
+            event.blur()
+        }
     }
 
-}
 function changeofCourse(){
+    
     let figures
-
     if (moveWhite){
         figures = document.querySelectorAll(`.figureW`)
+        document.getElementById('whoPlay').innerText = "Ходят белые"
+        
     } else {
          figures = document.querySelectorAll(`.figureB`)
+         document.getElementById('whoPlay').innerText = "Ходят черные"
     }
 
     figures.forEach(function(item){
@@ -188,6 +250,7 @@ function changeofCourse(){
             item.removeAttribute("onfocus") 
             item.removeAttribute("tabindex")
         })
+
         requiredFigures.forEach(function(item){
             step(item)
             item.setAttribute("tabindex", 0)
@@ -195,12 +258,17 @@ function changeofCourse(){
             item.classList.add("can-move")
             item.focus()
         })
+
     }
 
     requiredFigures = []
 
 }
-function step(event) {//на onfocus срабатывет  выделять ходы возможные + на onblur убирать все выделения ходов 
+function step(event) {
+    for(let move of document.querySelectorAll(".possible-move")){
+        move.classList.remove("possible-move")
+
+    }
 
     let step1, step2, step3, step4, step1Del, step2Del, step3Del, step4Del;
     let steps = []
@@ -212,17 +280,127 @@ function step(event) {//на onfocus срабатывет  выделять хо
 
 
     if(figureColor === "figureB" && moveWhite === true){
-        console.log("ходят белые")
+        let text = document.getElementById('whoPlay')
+        text.innerText = "Ходят белые"
+        text.classList.add("red")
+        setTimeout(()=>text.classList.remove("red"), 1000)
         event.onblur = ""
         event.blur()
         return
     } 
     if(figureColor === "figureW" && moveWhite === false){
-        console.log("ходят черные")
+        let text = document.getElementById('whoPlay')
+        text.innerText = "Ходят черные"
+        text.classList.add("red")
+        setTimeout(()=>text.classList.remove("red"), 1000)
+        
         event.onblur = ""
         event.blur()
         return
     } 
+
+    function queenStep(){
+        let queenStep = []
+        let queenPossbileStep = []
+        let enemyEat = []
+        let step
+        let barrierDirection = 0
+
+        for(let direction = 0; direction < 5; direction++){
+            for(let allegedStep = 1; allegedStep < 10; allegedStep++){
+                switch(direction){
+                    case 1 :
+                        step = {move: document.getElementById(`${column-allegedStep}_${line+allegedStep}`), direction:  direction}
+                        if(step.move === null){
+                            break
+                        }
+                        if(step.move.classList.contains("game")){
+                            queenStep.push(step)
+                        } 
+                        break
+                    case 2 :
+                        step = {move: document.getElementById(`${column+allegedStep}_${line+allegedStep}`), direction:  direction}
+                        if(step.move === null){
+                            break
+                        }
+                        if(step.move.classList.contains("game")){
+                            queenStep.push(step)
+                        }
+                        break
+                    case 3 :
+                        step = {move: document.getElementById(`${column-allegedStep}_${line-allegedStep}`), direction:  direction}
+                        if(step.move === null){
+                            break
+                        }
+                        if(step.move.classList.contains("game")){
+                            queenStep.push(step)
+                        }
+                        break
+                    case 4 :
+                        step = {move: document.getElementById(`${column+allegedStep}_${line-allegedStep}`), direction:  direction}
+                        if(step.move === null){
+                            break
+                        }
+                        if(step.move.classList.contains("game")){
+                            queenStep.push(step)
+                        }
+                        break
+                }
+            }
+        }
+
+        queenStep.forEach(function(item, index, object) {
+            if(item.move.children[0] && item.move.children[0].id != event.id && barrierDirection != item.direction && barrierDirection != item.direction +"close"){
+                barrierDirection = item.direction
+                if(object[index+1] ){
+                    if(!object[index+1].move.children[0] && object[index+1].direction === item.direction) {
+                        enemyEat.push(object[index+1])
+                    } 
+                }
+            } else if(item.move.children[0] && item.move.children[0].id != event.id && barrierDirection === item.direction) {
+                if(object[index-1].move.children[0]) {
+                    barrierDirection = item.direction+"close"
+                }  else if(object[index+1]) {
+                    if (!object[index+1].move.children[0] && object[index+1].direction === barrierDirection) {
+                        enemyEat.push(object[index+1])
+                    }
+                } 
+            } else if(item.move.children[0] && item.move.children[0].id === event.id){
+                barrierDirection = item.direction+"close"
+            } else if(barrierDirection === item.direction+"close"){
+
+            } else if(!item.move.children[0] && barrierDirection != item.direction+"close" && enemyEat.length != 0 && barrierDirection === item.direction){
+                enemyEat.push(object[index]) 
+            }
+            else{
+                queenPossbileStep.push(item)
+            }
+
+        })
+        queenPossbileStep.forEach(item => {
+            item.move.classList.add("possible-move")
+            if(firstMove){
+                item.move.classList.remove("possible-move")                
+                if(barrierDirection != item.direction + "close" && barrierDirection === item.direction ){
+                    item.move.classList.add("possible-move")
+                }
+            }
+            
+        }) 
+        requiredEat(null, enemyEat, queenPossbileStep, queenStep, event)
+        queenStep = []
+        
+        return
+    }
+    if(event.classList.contains("queen")){
+        if(event.id === "figureB" && !moveWhite){
+            queenStep()
+        }
+        if(event.id === "figureW" && moveWhite){
+            queenStep()
+        }
+        return
+    }
 
     function possibleMove() {
         if(figureColor === "figureW"){
@@ -299,21 +477,23 @@ function step(event) {//на onfocus срабатывет  выделять хо
         }
         steps.push(step1, step1Del, step2, step2Del, step3, step3Del, step4, step4Del)
 
-        requiredEat(step, figure, steps, event)
+        requiredEat(step, figure, steps, null, event)
     }
 
-    possibleMove()
-   
-   
-    event.onblur = function() {
-        lastFocus = event
+    if(!event.classList.contains("queen")){
+        possibleMove()
+    }
+
+    event.onblur = function() { // тут у королевы снимается блюр перед ходом - вызывает проблемы, лучше подобную конструкцию у неев др месте сделать или посмотреть как решил у обычных
+        lastFocus = event   
         for(let move of document.querySelectorAll(".possible-move")){
             move.classList.remove("possible-move")
         }
     }
-
+    
 
 }
+
 
     
 
@@ -342,37 +522,3 @@ function step(event) {//на onfocus срабатывет  выделять хо
 //     } 
 // }
 
-
-
-// function whiteStep(event){//на onfocus срабатывет должно выделять ходы возможные + на onblur убирать все выделения ходов 
-//     let td = event.target.closest(`td`)
-//     let column = +td.id.split("_", 1)[0]
-//     let line = +td.id.split("_", 2)[1]
-//     let figureColor = event.target.id
-
-//     possibleMove()
-//     function possibleMove(){
-//         if(figureColor === "figureW"){
-//             let step1 = document.getElementById(`${column-1}_${line+1}`)
-//             let step2 = document.getElementById(`${column+1}_${line+1}`)
-//             if(column-1 != 0 && !step1.children[0].id === figureColor){
-//                 step1.onclick = move.bind(null, step1, step2);
-//                 step1.classList.add("possible-move") 
-//             }
-    
-//             if(column+1 != 9 && !step2.children[0].id === figureColor){
-//                 step2.onclick = move.bind(null, step2, step1);
-//                 step2.classList.add("possible-move") 
-//             }
-//             if(!document.querySelector(".possible-move")){
-//                 alert("нет доступных ходов")
-//                 event.target.blur()
-//             }
-//             if(figureColor === "figureB"){
-                
-//             }
-//         }
-
-
-
-//    }
