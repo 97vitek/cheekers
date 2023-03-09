@@ -105,11 +105,11 @@ td,th,tr{
 }
 
 .figureW:focus{
-    border: 3px solid rgb(255, 0, 0, 0.5);
+    border: 2.5px solid rgb(255, 0, 0, 0.5);
     box-sizing: border-box;
 }
 .figureB:focus{
-    border: 3px solid rgb(255, 0, 0);
+    border: 2.5px solid rgb(255, 0, 0);
     box-sizing: border-box;
 }
 .can-move{
