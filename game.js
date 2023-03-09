@@ -5,16 +5,20 @@ let lastFocus
 let firstMove = false
 let eatMove = false
 let requiredFigures = []
-
+let commonSteps = []
+let commonRequiredSteps = []
+let botRequiredFigures = []
+let moved = false
 
 let move = function(step, figure, steps, queenSteps, requiredEat, event) {
-    document.querySelectorAll(".can-move").forEach(item => item.classList.remove("can-move"))
+
     if(figure.onfocus === null){
         return
     }
     if(figure.classList.contains("queen")){
 
         if(event.target.classList.contains("possible-move")){
+            document.querySelectorAll(".can-move").forEach(item => item.classList.remove("can-move"))
 
             event.target.append(figure)
                 
@@ -34,7 +38,7 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
 
            firstMove = true 
         }
-        figure.focus()//ПРОБЛЕМА НЕ ЗДЕСЬ!  
+        figure.focus()
 
         return
 
@@ -48,6 +52,11 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
     let step3Del = steps[5];
     let step4 = steps[6];
     let step4Del = steps[7];
+
+    if(lastFocus != figure) {
+        return
+    }
+    document.querySelectorAll(".can-move").forEach(item => item.classList.remove("can-move"))
     
     if(step === step1 && step1Del != undefined) {
         if(step1Del.children[0].id != figure.id) {
@@ -74,9 +83,7 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
         }
     }
 
-    if(lastFocus != figure) {
-        return
-    }
+
     step.append(figure)
     firstMove = true
     if(+step.id.split("_", 2)[1] === 8 && figure.id === "figureW"){
@@ -97,7 +104,13 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
 
 
 function requiredEat(step, enemyEat, steps, queenSteps, event) {
+
     let requiredSteps = []
+    let figureSteps = []
+    let figureReqSteps = []
+    let figureWithSteps = {};
+    let botReqFigure = {"figure": event, "requiredSteps": []}
+
     if(event.classList.contains("queen")){
         console.log("yeah,it's queen")
         if(enemyEat.length > 0){
@@ -107,10 +120,12 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
                 item.move.onclick = move.bind(null, item.move, event, steps, queenSteps, enemyEat);
                 requiredFigures.push(event)
                 requiredSteps.push(item.move)
+                botReqFigure.requiredSteps.push(item.move)
             })
         } else{
             steps.forEach(item => {
                 item.move.onclick = move.bind(null, item.move, event, steps, queenSteps, null);
+                figureSteps.push(item.move)
             })
             if(firstMove){
                 eatMove = false
@@ -120,6 +135,7 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
         }
         
     } else{
+
         let step1 = steps[0];
         let step1Del = steps[1];
         let step2 = steps[2];
@@ -133,13 +149,16 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
             if(step1.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
                 step1.onclick = move.bind(null, step1, event, steps, null, null);
                 step1.classList.add("possible-move") 
+                figureSteps.push(step1)
             }
+
         }
 
         if(step2.id.split("_")[0] != 9 && !step2.children[0]) {
             if(step2.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
                 step2.onclick = move.bind(null, step2, event, steps, null, null);
                 step2.classList.add("possible-move") 
+                figureSteps.push(step2)
             }
         }
         
@@ -147,6 +166,7 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
             if(step3.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
                 step3.onclick = move.bind(null, step3, event, steps, null, null);
                 step3.classList.add("possible-move") 
+                figureSteps.push(step3)
             }
         }
 
@@ -154,10 +174,11 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
             if(step4.classList.contains("game")) { // ОГРАНИЧИВАЕМ поля хода
                 step4.onclick = move.bind(null, step4, event, steps, null, null);
                 step4.classList.add("possible-move") 
+                figureSteps.push(step4)
             }
         }
 
-
+ 
         for(let i = 0; i < steps.length; i++) {
             if(i % 2 === 0) {
                 if(steps[i+1] != undefined) {
@@ -185,9 +206,45 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
         requiredSteps.forEach((step) => {
             step.onclick = move.bind(null, step, event, steps, null, null);
             step.classList.add("possible-move") 
+            commonRequiredSteps.push(step)
+            botReqFigure.requiredSteps.push(step)
         })
+
     }
+    if(botReqFigure.requiredSteps.length !=  0 && event.id === "figureB"){
+        if(botRequiredFigures.length === 0){
+            botRequiredFigures.push(botReqFigure)
+        } else {
+            botRequiredFigures.forEach(item => {
+                if(item.figure === botReqFigure.figure){
+                    item.requiredSteps.forEach(item => {
+                        botReqFigure.requiredSteps.forEach( move=>{
+                            if(item.id === move.id){
+                                return
+                            }
+                        })
+
+                    })
+                }
+                botRequiredFigures.push(botReqFigure)
+            })
+        }
+
+    }
+    console.log(botRequiredFigures)
+    console.log(botReqFigure)
+    console.log(event.parentElement)
+
+    if(figureSteps.length > 0 && event.id === "figureB"){
+        figureWithSteps = {"figure": event, "PossibleSteps": figureSteps, "RequiredSteps":figureReqSteps} 
+
+        commonSteps.push(figureWithSteps)
+    } 
+
+    console.log(commonSteps)
+
         if(firstMove && eatMove === false ){
+            console.log("XUI")
             let moves = document.querySelectorAll(".possible-move")
             moves.forEach(function(move) {
                 move.onclick = ""
@@ -202,6 +259,7 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
             changeofCourse(event)
             return
         } else if(firstMove && requiredSteps.length === 0 && eatMove === true){
+            console.log("im'here")
             let moves = document.querySelectorAll(".possible-move")
             moves.forEach(function(move) {
                 move.onclick = ""
@@ -225,7 +283,12 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
     }
 
 function changeofCourse(){
-    
+    moved = false
+    console.log("now")
+    commonSteps = []
+    commonRequiredSteps = []
+    botRequiredFigures = []
+    moved = false
     let figures
     if (moveWhite){
         figures = document.querySelectorAll(`.figureW`)
