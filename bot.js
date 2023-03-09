@@ -8,6 +8,7 @@ function start(event){
         subtree:true,
         characterData: true,
     })
+    play()
 }
 
 
@@ -50,10 +51,13 @@ function play(figure){
             lastFocus.dispatchEvent(eventFocus)
             let randomClick = Math.round(Math.random() * (botRequiredFigures[numberFigure].requiredSteps.length - 1) + 1)
 
-            botRequiredFigures[numberFigure].requiredSteps[randomClick-1].dispatchEvent(eventMove)
-            if(!moveWhite){
-                play()
-            }
+            setTimeout(()=> {
+                botRequiredFigures[numberFigure].requiredSteps[randomClick-1].dispatchEvent(eventMove);
+                if(!moveWhite){
+                    play()
+                }
+            }, 500)
+
         } else{
             moveWhite = !moveWhite
         }
@@ -77,7 +81,9 @@ function play(figure){
         let randomClick = Math.round(Math.random() * (botRequiredFigures[randomFigure-1].requiredSteps.length - 1) + 1)
 
         lastFocus = choosedFigure
-        botRequiredFigures[randomFigure-1].requiredSteps[randomClick-1].dispatchEvent(eventMove)
+        setTimeout(()=> { botRequiredFigures[randomFigure-1].requiredSteps[randomClick-1].dispatchEvent(eventMove);
+            play()
+        }, 500)
         moved = true
         console.log("X")
 
@@ -90,7 +96,9 @@ function play(figure){
         let randomClick = Math.round(Math.random() * (commonSteps[randomFigure-1].PossibleSteps.length - 1) + 1)
 
         lastFocus = choosedFigure
-        commonSteps[randomFigure-1].PossibleSteps[randomClick-1].dispatchEvent(eventMove)
+        setTimeout(()=> { commonSteps[randomFigure-1].PossibleSteps[randomClick-1].dispatchEvent(eventMove);     
+            play()
+        }, 300)
         moved = true
     }
 
@@ -124,9 +132,7 @@ function play(figure){
     //     setTimeout(play(),500)
     //    return
     // }
-    if(!moveWhite){
-        play()
-    }
+
     
 }
 // , 500)}
