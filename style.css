@@ -27,7 +27,7 @@ td,th,tr{
 }
 .possible-move{
     box-sizing: border-box;
-    outline: 3.1px solid green;
+    outline: 3.1px solid rgb(2, 128, 2, 0.7);
 }
 .game-table{
     align-self: center;
