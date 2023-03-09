@@ -8,7 +8,11 @@ table{
     padding: 0;
     margin: 0;
     border-collapse: collapse;
+
     background-image: url(img/woodd1.jpg);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
     min-width: 502px
 }
 
@@ -31,10 +35,14 @@ td,th,tr{
 .game{
     width: 54px;
     height: 50px;
-    background-color: rgb(208, 213, 216);
+    border: 1px solid black;
 }
 .grey{
     background-color: rgb(88, 88, 88);
+    background-image: url(img/blackw.jpg);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .firstTr{
    
@@ -72,6 +80,10 @@ td,th,tr{
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
+    background-image: url(img/BlackF.jpg);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .figureW{
     width: 40px;
@@ -84,9 +96,16 @@ td,th,tr{
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
     border: 1px solid black;
+    background-image: url(img/whiteF.jpg);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: contain;
+    
+
 }
+
 .figureW:focus{
-    border: 3px solid rgb(255, 0, 0);
+    border: 3px solid rgb(255, 0, 0, 0.5);
     box-sizing: border-box;
 }
 .figureB:focus{
@@ -94,25 +113,40 @@ td,th,tr{
     box-sizing: border-box;
 }
 .can-move{
-    border: 1px solid rgb(0, 13, 255);
+    border: 3px solid rgb(1, 13, 255, 0.5);
     box-sizing: border-box;
+
 }
 .queen{
     position: relative;
 }
 .queen::before{
-    content: "Д";
+    /* content: "";
+     background-image: url(img/crown.png);
+     width: 50px;
+     height: 50px;
+     background-origin: border-box;
+     background-repeat: no-repeat;
+     background-size: contain;
     position: absolute;
     top: 0px;
     left: 10px;
     font-size: 30px;
-    
+     */
 }
 .figureW.queen{
     color: black;
+    background-image: url(img/whiteQueen.jpg);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .figureB.queen{
     color: rgb(255, 255, 255);
+    background-image: url(img/blackQueen.jpg);
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .red{
     color: red;
