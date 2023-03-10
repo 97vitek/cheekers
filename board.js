@@ -64,7 +64,6 @@ function createBord(){
             if ((line < 9  && column != 0 && column != 9 && line > 5) && td.className == "game grey") {
                 td.innerHTML = "<div onfocus=\"step(event.target)\" id = \"figureW\" class = \"figureW \" tabindex = \"0\"></div>";
                 figureW = td.innerHTML 
-                console.log(figureW)
             } // заполняем Фигурами
 
             if((line > 0 && column != 0 && column != 9 && line < 4) && td.className == "game grey") {

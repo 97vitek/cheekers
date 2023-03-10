@@ -231,9 +231,6 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
         }
 
     }
-    console.log(botRequiredFigures)
-    console.log(botReqFigure)
-    console.log(event.parentElement)
 
     if(figureSteps.length > 0 && event.id === "figureB"){
         figureWithSteps = {"figure": event, "PossibleSteps": figureSteps, "RequiredSteps":figureReqSteps} 
@@ -241,10 +238,7 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
         commonSteps.push(figureWithSteps)
     } 
 
-    console.log(commonSteps)
-
         if(firstMove && eatMove === false ){
-            console.log("XUI")
             let moves = document.querySelectorAll(".possible-move")
             moves.forEach(function(move) {
                 move.onclick = ""
@@ -259,7 +253,6 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
             changeofCourse(event)
             return
         } else if(firstMove && requiredSteps.length === 0 && eatMove === true){
-            console.log("im'here")
             let moves = document.querySelectorAll(".possible-move")
             moves.forEach(function(move) {
                 move.onclick = ""
@@ -284,7 +277,6 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
 
 function changeofCourse(){
     moved = false
-    console.log("now")
     commonSteps = []
     commonRequiredSteps = []
     botRequiredFigures = []
@@ -558,30 +550,4 @@ function step(event) {
 }
 
 
-    
-
-
-// function play(){//ХОДЫ БОТА
-//     let figures = document.querySelectorAll('.figureW');
-//     let figuresNumber = Math.floor(Math.random()*(figures.length))
-//     console.log(figures[figuresNumber].parentElement)
-//     let player = figures[figuresNumber].onclick()
-//     if ((step1.style.border = "2px solid green") && (step2.style.border = "2px solid green")){
-//         let randomStep = Math.round(Math.random()*(2-1)+1);
-//         step1.onclick,step2.onclick=move;
-//         if (randomStep = 1){
-//             step1.click()
-//         } else {
-//             step2.click()
-//         }
-//     }
-//     else if (step1.style.border = "2px solid green"){
-//         step1.onclick=move
-//         step1.click()
-//     }
-//     else if (step2.style.border = "2px solid green"){
-//         step2.onclick=move
-//         step2.click()
-//     } 
-// }
 

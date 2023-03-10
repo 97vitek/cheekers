@@ -13,12 +13,10 @@ function start(event){
 
 
 function play(figure){
-    // setTimeout(function(){
+    setTimeout(function(){
     if(moveWhite){
         return
     }
-
-        console.log("syka zdes")
     commonSteps = []
     commonRequiredSteps = []
     botRequiredFigures = []
@@ -29,9 +27,6 @@ function play(figure){
     let figures = document.querySelectorAll(`.figureB`)
 
     if(moved){
-
-
-        console.log('moved')
         lastFocus.setAttribute("onfocus", "step(event.target)") 
         lastFocus.tabIndex = 0
         step(lastFocus)
@@ -56,7 +51,7 @@ function play(figure){
                 if(!moveWhite){
                     play()
                 }
-            }, 500)
+            }, 700)
 
         } else{
             moveWhite = !moveWhite
@@ -83,10 +78,8 @@ function play(figure){
         lastFocus = choosedFigure
         setTimeout(()=> { botRequiredFigures[randomFigure-1].requiredSteps[randomClick-1].dispatchEvent(eventMove);
             play()
-        }, 500)
+        }, 700)
         moved = true
-        console.log("X")
-
     }    else{
         randomFigure = Math.round(Math.random() * (commonSteps.length - 1) + 1)
         let choosedFigure = commonSteps[randomFigure-1].figure
@@ -98,41 +91,10 @@ function play(figure){
         lastFocus = choosedFigure
         setTimeout(()=> { commonSteps[randomFigure-1].PossibleSteps[randomClick-1].dispatchEvent(eventMove);     
             play()
-        }, 300)
+        }, 700)
         moved = true
     }
 
-    // if(moved){
-    //     botRequiredFigures = []
-    //     step(lastFocus)
-    //     botRequiredFigures.forEach(item => {
-    //         if(item.figure === lastFocus && item.requiredSteps.length > 0){
-    //         let eventFocus = new Event("focus", {bubbles: true})
-    //         let eventMove = new Event("click", {bubbles: true})
-
-    //         lastFocus.dispatchEvent(eventFocus)
-
-    //         let randomClick = Math.round(Math.random() * (item.requiredSteps.length - 1) + 1)
-
-    //         item.requiredSteps[randomClick-1].dispatchEvent(eventMove)
-    //         moved = true
-    //         }         else{
-    //             moveWhite = !moveWhite
-    //             return 
-    //         }
-            
-    //     })
-        
-
-        
-    //     // if(possibleSteps.length > 0 && ){
-    //     //     let randomClick = Math.round(Math.random() * (possibleSteps.length - 1) + 1)
-    //     //     possibleSteps[randomClick-1].dispatchEvent(eventMove)
-
-    //     setTimeout(play(),500)
-    //    return
-    // }
-
     
 }
-// , 500)}
+, 500)}
