@@ -298,7 +298,7 @@ function changeofCourse(){
        if(confirm("Сыграем еще раз?")){
         location.reload()
        } else{
-        window.close()
+        return
        }
     }
     if(document.querySelectorAll(`.figureW`).length === 0){
@@ -306,7 +306,7 @@ function changeofCourse(){
        if(confirm("Сыграем еще раз?")){
         location.reload()
        } else{
-        window.close()
+        return
        }
     }
 
