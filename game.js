@@ -38,7 +38,9 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
 
            firstMove = true 
         }
-        figure.focus()
+        setTimeout(function(){
+            figure.focus()
+        }, 0)
 
         return
 
