@@ -62,7 +62,9 @@ function play(figure){
     figures.forEach(function(item){
         item.setAttribute("onfocus", "step(event.target)") 
         item.tabIndex = 0
-        step(item)
+        if(!moveWhite){
+            step(item)
+        }
         document.querySelectorAll(".possible-move").forEach((item) => {
             item.classList.remove("possible-move")
         })
