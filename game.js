@@ -102,7 +102,9 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
     }, 0)
 
     figure.onblur = () => {
-        figure.focus()
+        setTimeout(function(){
+            figure.focus()
+        }, 0)
     }
 
 }
@@ -117,7 +119,6 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
     let botReqFigure = {"figure": event, "requiredSteps": []}
 
     if(event.classList.contains("queen")){
-        console.log("yeah,it's queen")
         if(enemyEat.length > 0){
             document.querySelectorAll(".possible-move").forEach(item => item.classList.remove("possible-move"))
             enemyEat.forEach(item => { 
