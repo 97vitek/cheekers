@@ -91,7 +91,11 @@ function play(figure){
         let randomClick = Math.round(Math.random() * (commonSteps[randomFigure-1].PossibleSteps.length - 1) + 1)
 
         lastFocus = choosedFigure
-        setTimeout(()=> { commonSteps[randomFigure-1].PossibleSteps[randomClick-1].dispatchEvent(eventMove);     
+        setTimeout(()=> {  
+            if(randomFigure-1 > commonSteps.length){
+                randomFigure = commonSteps.length
+            }
+            commonSteps[randomFigure-1].PossibleSteps[randomClick-1].dispatchEvent(eventMove);     
             play()
         }, 700)
         moved = true

@@ -104,14 +104,19 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
     figure.onblur = () => {
         setTimeout(function(){
             figure.focus()
+            figure.onblur = ""
         }, 0)
+     
     }
 
 }
 
 
 function requiredEat(step, enemyEat, steps, queenSteps, event) {
-
+    if(firstMove && moveWhite){
+        event.classList.add("can-move")
+        console.log(event.classList)
+    }
     let requiredSteps = []
     let figureSteps = []
     let figureReqSteps = []
@@ -237,13 +242,11 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
         }
 
     }
-
+    
     if(figureSteps.length > 0 && event.id === "figureB"){
         figureWithSteps = {"figure": event, "PossibleSteps": figureSteps, "RequiredSteps":figureReqSteps} 
-
         commonSteps.push(figureWithSteps)
     } 
-
         if(firstMove && eatMove === false ){
             let moves = document.querySelectorAll(".possible-move")
             moves.forEach(function(move) {
@@ -288,6 +291,9 @@ function changeofCourse(){
     botRequiredFigures = []
     moved = false
     let figures
+    document.querySelectorAll(".can-move").forEach(item =>{
+        item.classList.remove("can-move")
+    })
     if (moveWhite){
         figures = document.querySelectorAll(`.figureW`)
         document.getElementById('whoPlay').innerText = "Ходят белые"

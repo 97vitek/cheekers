@@ -33,9 +33,12 @@ td,th,tr{
     align-self: center;
 }
 .game{
+    padding: 0;
+    margin: 0;
     width: 54px;
     height: 50px;
     border: 1px solid black;
+    
 }
 .grey{
     background-color: rgb(88, 88, 88);
