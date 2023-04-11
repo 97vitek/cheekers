@@ -95,7 +95,10 @@ let move = function(step, figure, steps, queenSteps, requiredEat, event) {
     step.onclick = "";
     step2.onclick = ""; //убираем возможность после нажатия переместить фигуру, через eventlistener не получилось почему-то(
     
-    figure.focus()
+    setTimeout(function(){
+        figure.focus()
+    }, 0)
+
     figure.onblur = () => {
         figure.focus()
     }
@@ -285,10 +288,26 @@ function changeofCourse(){
     if (moveWhite){
         figures = document.querySelectorAll(`.figureW`)
         document.getElementById('whoPlay').innerText = "Ходят белые"
-        
     } else {
          figures = document.querySelectorAll(`.figureB`)
          document.getElementById('whoPlay').innerText = "Ходят черные"
+    }
+
+    if(document.querySelectorAll(`.figureB`).length === 0){
+        alert("Поздравляем! Выиграли белые!")
+       if(confirm("Сыграем еще раз?")){
+        location.reload()
+       } else{
+        window.close()
+       }
+    }
+    if(document.querySelectorAll(`.figureW`).length === 0){
+        alert("Поздравляем! Выиграли Черные!")
+       if(confirm("Сыграем еще раз?")){
+        location.reload()
+       } else{
+        window.close()
+       }
     }
 
     figures.forEach(function(item){
