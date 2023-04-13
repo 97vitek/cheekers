@@ -15,6 +15,8 @@ function start(event){
 function play(figure){
     setTimeout(function(){
     if(moveWhite){
+        firstMove = false
+
         return
     }
     commonSteps = []
@@ -54,7 +56,9 @@ function play(figure){
             }, 700)
 
         } else{
+
             moveWhite = !moveWhite
+            changeofCourse()
         }
 
         return
@@ -92,7 +96,7 @@ function play(figure){
 
         lastFocus = choosedFigure
         setTimeout(()=> {  
-            if(randomFigure-1 > commonSteps.length){
+            if(randomFigure > commonSteps.length){
                 randomFigure = commonSteps.length
             }
             commonSteps[randomFigure-1].PossibleSteps[randomClick-1].dispatchEvent(eventMove);     

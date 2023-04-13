@@ -286,7 +286,6 @@ function requiredEat(step, enemyEat, steps, queenSteps, event) {
 
 function changeofCourse(){
     moved = false
-    commonSteps = []
     commonRequiredSteps = []
     botRequiredFigures = []
     moved = false
