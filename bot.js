@@ -78,6 +78,9 @@ function play(figure){
         randomFigure = Math.round(Math.random() * (botRequiredFigures.length - 1) + 1)
         let choosedFigure = botRequiredFigures[randomFigure-1].figure
         choosedFigure.dispatchEvent(eventFocus)
+        choosedFigure.onblur = () => { // нужно затестить если что убрать
+            figure.focus()
+        }
 
         let randomClick = Math.round(Math.random() * (botRequiredFigures[randomFigure-1].requiredSteps.length - 1) + 1)
 
@@ -105,6 +108,8 @@ function play(figure){
         moved = true
     }
 
+    choosedFigure.onblur = ""// нужно затестить если что убрать
+    choosedFigure.blur() // нужно затестить если что убрать
     
 }
 , 500)}
